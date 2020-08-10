@@ -121,7 +121,7 @@ logging = False  # set True/False to turn on/off capture of logging data in 'sco
 
 # general strings to help display useful information.
 
-appName = 'Scoreboard Controller V0.10 '
+appName = 'Scoreboard Controller V0.11 '
 board_type = board.get('board_type')
 board_digit_size = board.get('digit_size')
 sport_version = board.get('sport')
