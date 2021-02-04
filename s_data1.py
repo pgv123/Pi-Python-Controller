@@ -15,8 +15,12 @@
 
 import os
 import json
-import Ziku
 
+def log_it(logging, str1):
+    if logging:
+        with open('scorelog.txt','a') as s_log:
+            s_log.write("T: {0}: {1}".format(datetime.datetime.now(),str1))
+            s_log.write('\r\n')
 
 def read_config(file):
     with open(file, 'r') as conf:
@@ -28,6 +32,25 @@ def write_config(file, dict1):
     with open(file, 'w') as conf:
         json.dump(dict1, conf, indent=4)
 
+def check_int(s):
+    s = str(s)
+    if s[0] in ('-', '+'):
+        return s[1:].isdigit()
+    return s.isdigit()
+
+def check_allint(str_to_check):
+    all_int = 1
+    if len(str_to_check) > 1:		#must have some integers to check or just return true
+        #first char is always non-int so skipping it
+        for i in range(1,len(str_to_check)-1):
+            if check_int(str_to_check[i]) == False:
+            #	print('Failed int check: {0}'.format(str_to_check[i]))
+                all_int = 0
+                break
+            else:
+                all_int = 1
+
+    return all_int
 
 def get_scoreboard_data(file):
     return read_config(file)
@@ -40,6 +63,17 @@ def set_scoreboard_data(file, s1):
 def get_board(s1):
     return s1['board']
 
+def get_board_attr(s1,attr):
+    b = get_board(s1)
+    return b[attr]
+
+def set_board_attr(s1,attr,val):
+    b = get_board(s1)
+    b[attr] = val
+
+def set_names_attr(s1,attr,val):
+    b = get_names(s1)
+    b[attr] = val
 
 def get_sport(s1):
     return s1['sport']
@@ -48,26 +82,178 @@ def get_sport(s1):
 def get_this_sport(s1, version):
     return s1['sport'][version]
 
+def get_this_sport_attr(s1, attr):
+    v = get_this_sport(s1,get_board_attr(s1,'sport'))
+    return v[attr]
+
+def get_this_sport_attr(s1, attr):
+    v = get_this_sport(s1,get_board_attr(s1,'sport'))
+    return v[attr]
+
+def set_this_sport_attr(s1, attr, val):
+    v = get_this_sport(s1,get_board_attr(s1,'sport'))
+    v[attr] = val
 
 def get_names(s1):
     return s1['names']
 
+def get_names_attr(s1,attr):
+    n = get_names(s1)
+    return n[attr]
+
+def set_names_attr(s1,attr,val):
+    n = get_names(s1)
+    n[attr] = val
 
 def get_comms(s1):
     return s1['comms']
 
+def get_comms_attr(s1,attr):
+    c = get_comms(s1)
+    return c[attr]
 
 def get_spi(s1):
     return s1['spi']
+
+def get_spi_attr(s1,attr):
+    s = get_spi(s1)
+    return s[attr]
+
+def get_spi_set(s1,set):
+    #this uses the spi sequence dictionary which contains the position of the set and the port
+    s = get_spi(s1)
+    return s['sequence'][set]
+
+def get_spi_set_port(s1,set):
+    s = get_spi_set(s1,set)
+    return s['Port']
+
+#returns the position of this set in the spi sequence order
+def get_spi_set_pos(s1,set):
+    s = get_spi_set(s1,set)
+    return s['Pos']
+
+def set_spi_set_port(s1,set,p):
+    s = get_spi_set(s1,set)
+    s['Port'] = p
+
+def by_value(item):
+    return item[1]
+
+def renumber_spi_ports(s1):
+    port_count = [0,0,0,0]
+    seq = get_spi(s1)['sequence']
+    pos_sort = {k1: v1['Pos'] for k1, v1 in seq.items()}
+    for k,v in sorted(pos_sort.items(), key=by_value):
+        print(k,v)
+        this_port = seq[k]['Port']
+        count = port_count[this_port]
+        if k == 'Clock':
+            loc = set_clock_location(s1)
+        elif k == 'Home_Score':
+            loc = set_team_score_location(s1, 'Home')['Home']
+        elif k == 'Away_Score':
+            loc = set_team_score_location(s1, 'Away')['Away']
+        elif k == 'Quarter':
+            loc = set_quarter_location(s1,'Quarter')
+        elif k == 'Home_TN':
+            loc = set_teamname_location(s1,'Home_TN')
+        elif k == 'Away_TN':
+            loc = set_teamname_location(s1, 'Away_TN')
+        elif k == 'Vms1':
+            loc = set_vms_location(s1,'Vms1')
+
+        for units in loc.values():
+            print(f'Units: {units}')
+            for vals in units.values():
+                count += 1
+                lednum = str(vals)
+                set_led_attr(s1,lednum,'spi_port','p'+str(this_port))
+                set_led_attr(s1,lednum,'spi',count)
+
+        port_count[this_port] = count
+
+def recolour_set(s1,set,colour):
+
+    if set == 'Clock':
+        loc = set_clock_location(s1)
+    elif set == 'Home_Score':
+        loc = set_team_score_location(s1, 'Home')['Home']
+    elif set == 'Away_Score':
+        loc = set_team_score_location(s1, 'Away')['Away']
+    elif set == 'Quarter':
+        loc = set_quarter_location(s1,'Quarter')
+    elif set == 'Home_TN':
+        loc = set_teamname_location(s1,'Home_TN')
+    elif set == 'Away_TN':
+        loc = set_teamname_location(s1, 'Away_TN')
+    elif set == 'Vms1':
+        loc = set_vms_location(s1,'Vms1')
+
+    for units in loc.values():
+       # print(f'Units: {units}')
+        for vals in units.values():
+            lednum = str(vals)
+            set_led_attr(s1,lednum,'colour',colour)
+
+
+
+def get_this_spi_port(s1,p1):
+    all_ports = get_spi_attr(s1,'port_settings')
+    return all_ports[p1]
+
+def get_this_spi_port_attr(s1,p1,attr):
+    p = get_this_spi_port(s1,p1)
+    return p[attr]
 
 
 def get_i2c(s1):
     return s1['i2c']
 
 
+def get_i2c_attr(s1,attr):
+    i = get_i2c(s1)
+    return i[attr]
+
+def get_this_i2c_port(s1,p1):
+    all_ports = get_i2c_attr(s1,'port_settings')
+    return all_ports[p1]
+
+def get_this_i2c_port_attr(s1,p1,attr):
+    p = get_this_i2c_port(s1,p1)
+    return p[attr]
+
 def get_leds(s1):
     return s1['leds']
 
+def get_led(s1,ledset,ledgrp,ledunit):
+    k = get_dig_num(s1,ledset,ledgrp,ledunit)
+    return k
+
+def set_led(s1,ledset,ledgrp,ledunit,ledval):
+    k = get_dig_num(s1,ledset,ledgrp,ledunit)
+    s1['leds'][str(k)]['val'] = ledval
+    #print(s1['leds'][str(k)])
+
+def set_led_state(s1,ledset,ledgrp,ledunit,ledstat):
+    k = get_dig_num(s1,ledset,ledgrp,ledunit)
+    s1['leds'][str(k)]['state'] = ledstat
+    #print(s1['leds'][str(k)])
+
+def set_led_port(s1,ledset,ledgrp,ledunit,ledport,lednum):
+    k = get_dig_num(s1,ledset,ledgrp,ledunit)
+    s1['leds'][str(k)]['spi_port'] = 'p'+str(ledport)
+    s1['leds'][str(k)]['spi'] = lednum
+
+def set_group_attr(s1, ledgrp, ledattr, ledval):
+    #sets all leds in this group with the same attr value
+    leds_dict = s1['leds']
+    leds = {k:v for k, v in leds_dict.items() if is_group(v,ledgrp)}
+    for k,v in leds.items():
+        v[ledattr] = ledval
+
+def set_led_attr(s1,lednum,ledattr,ledval):
+    s1['leds'][lednum][ledattr] = ledval
 
 def get_active_leds(s1):
     active_leds = {k: v for k, v in s1['leds'].items() if is_active(v) and is_digit(v)}
@@ -88,6 +274,115 @@ def get_active_clock_leds(s1):
     clock_leds = {k: v for k, v in s1['leds'].items() if is_active(v) and is_clock(v)}
     return clock_leds
 
+def get_clock_group(s1,group):
+    clock_group_leds = {k: v for k, v in s1['leds'].items() if is_clock(v) and is_group(v,group)}
+    return clock_group_leds
+
+
+def cleanout_clock_group(s1,group):
+    clock_group_leds = {k: v for k, v in s1['leds'].items() if is_clock(v) and is_group(v,group)}
+    for i in clock_group_leds:
+        del i
+
+def get_home_group(s1,group):
+    home_group_leds = {k: v for k, v in s1['leds'].items() if is_home(v) and is_group(v,group)}
+    return home_group_leds
+
+def get_quarter_group(s1,group):
+    quarter_group_leds = {k: v for k, v in s1['leds'].items() if is_quarter(v) and is_group(v,group)}
+    return quarter_group_leds
+
+def get_away_group(s1,group):
+    away_group_leds = {k: v for k, v in s1['leds'].items() if is_away(v) and is_group(v,group)}
+    return away_group_leds
+
+def get_vms1_group(s1,group):
+    vms_group_leds = {k: v for k, v in s1['leds'].items() if is_group(v,'VMS') and is_group(v,group)}
+    return vms_group_leds
+
+def get_this_group(s1,set,group):
+    return {k: v for k, v in s1['leds'].items() if is_set(v,set) and is_group(v,group) }
+
+def get_units_from_group(g1,units):
+    group_units = {k1:v1 for k1,v1 in g1.items() if is_units(v1,units)}
+   # print(group_units)
+    return group_units
+
+def get_digit(s1,set,group,units):
+    elements = get_this_group(s1,set,group)
+    unit_element = get_units_from_group(elements,units)
+   # for k1,v1 in unit_element.items():
+   #     print(k1)
+    return unit_element
+
+def get_dig_val(s1,set,group,units):
+    elements = get_this_group(s1,set,group)
+    unit_element = get_units_from_group(elements,units)
+    v1 = list(unit_element.values())[0]
+    return v1['val']
+
+def get_dig_num(s1,set,group,units):
+    elements = get_this_group(s1,set,group)
+    unit_element = get_units_from_group(elements,units)
+  #  print(f'Unit_element: {unit_element}')
+  #  for k1,v1 in unit_element.items():
+     #   print(k1)
+    #only ever want to return the first key. The units should be unique!
+    return list(unit_element.keys())[0]
+
+def get_clock_units_val(s1,group,units):
+    clock_group = get_clock_group(s1,group)
+    for k,v in clock_group.items():
+        if v['units'] == units:
+            return v['val']
+
+def get_clock_units_num(s1,group,units):
+    clock_group = get_clock_group(s1,group)
+    for k,v in clock_group.items():
+        if v['units'] == units:
+            return k
+
+def get_quarter_units_num(s1,group,units):
+    quarter_group = get_quarter_group(s1,group)
+    for k,v in quarter_group.items():
+        if v['units'] == units:
+            return k
+
+def get_home_units_val(s1,group,units):
+    home_group = get_home_group(s1,group)
+    for k,v in home_group.items():
+        if v['units'] == units:
+            return v['val']
+
+def get_home_units_num(s1,group,units):
+    home_group = get_home_group(s1,group)
+    for k,v in home_group.items():
+        if v['units'] == units:
+            return k
+
+def get_away_units_val(s1, group, units):
+    away_group = get_away_group(s1, group)
+    for k, v in away_group.items():
+        if v['units'] == units:
+            return v['val']
+
+def get_away_units_num(s1, group, units):
+    away_group = get_away_group(s1, group)
+    for k, v in away_group.items():
+        if v['units'] == units:
+            return k
+
+def get_vms1_units_val(s1, group, units):
+    vms1_group = get_vms1_group(s1, group)
+    for k, v in vms1_group.items():
+        if v['units'] == units:
+            return v['val']
+
+def get_vms1_units_num(s1, group, units):
+    vms1_group = get_vms1_group(s1, group)
+    for k, v in vms1_group.items():
+        if v['units'] == units:
+            return k
 
 def get_ziku(s1, port):
     return getattr(Ziku, s1['spi']['port_settings'][port]['ziku'])
@@ -134,6 +429,12 @@ def is_home(digit):
 def is_away(digit):
     return digit['set'] == 'Away'
 
+def is_home_tn(digit):
+    return digit['set'] == 'Home_TN'
+
+
+def is_away_tn(digit):
+    return digit['set'] == 'Away_TN'
 
 def is_clock(digit):
     return digit['set'] == 'Clock'
@@ -166,13 +467,18 @@ def is_group(digit, group):
 def is_set(digit, set):
     return digit['set'] == set
 
+def is_units(digit, units):
+    return digit['units'] == units
 
 def is_team(digit, team):
     return digit['set'] == team
 
 
-def is_vms(digit, vms):
+def is_vms(digit,vms):
     return digit['set'] == vms
+
+def is_vms_scroll(digit):
+    return digit['vms'] == 1
 
 def set_sport(s1, vers):
     s1['board']['sport'] = vers
@@ -212,14 +518,15 @@ def set_team_score_location(s1, team):
     return s_loc
 
 
-def set_quarter_location(s1):
+def set_quarter_location(s1, qtr):
     leds = get_active_leds(s1)
 
     q_loc = {}  # q_loc entries match the Lou string locations for values
+    q_loc[qtr] = {}
     quarter_leds = {k: v for k, v in leds.items() if is_quarter(v)}
 
     for k, v in quarter_leds.items():
-        q_loc[v['units']] = k
+        q_loc[qtr][v['units']] = k
     return q_loc
 
 
@@ -230,6 +537,7 @@ def set_clock_group_location(s1, group):
     for k, v in clock_leds.items():
         c_loc[v['units']] = k
     return c_loc
+
 
 
 def set_clock_location(s1):
@@ -262,12 +570,13 @@ def set_teamname_location(s1, team):
     # then the entry in the returned dict will be
     # {1: '30', 2: '35'}.......
     chars = get_active_chars(s1)
-    print(f"Chars are: {chars}")
+    #print(f"Chars are: {chars}")
     t_loc = {}  # t_loc entries match the Lou string locations for values
+    t_loc[team] = {}
     tn_chars = {k: v for k, v in chars.items() if (is_team(v, team))}
     for k, v in tn_chars.items():
-        t_loc[v['units']] = k
-    print(f"Teamname Location: {t_loc}")
+        t_loc[team][v['units']] = k
+    #print(f"Teamname Location: {t_loc}")
     return t_loc
 
 def set_vms_location(s1, vms):
@@ -276,12 +585,13 @@ def set_vms_location(s1, vms):
     # then the entry in the returned dict will be
     # {1: '30', 2: '35'}.......
     chars = get_active_chars(s1)
-    print(f"Chars are: {chars}")
+   # print(f"Chars are: {chars}")
     v_loc = {}  # v_loc entries match the Lou string locations for values
+    v_loc[vms] = {}
     v_chars = {k: v for k, v in chars.items() if (is_vms(v, vms))}
     for k, v in v_chars.items():
-        v_loc[v['units']] = k
-    print(f"{vms} Location: {v_loc}")
+        v_loc[vms][v['units']] = k
+    #print(f"{vms} Location: {v_loc}")
     return v_loc
 
 # set up the score and clock locations in SPI
@@ -299,8 +609,8 @@ def set_all_locations(s1):
     c_loc = set_clock_location(s1)
     q_loc = set_quarter_location(s1)
     tn_loc = set_teams_location(s1)
-    vms_loc = set_vms_location(s1, 'vms1')
-    print(tn_loc)
+    vms_loc = set_vms_location(s1, 'Vms1')
+    #print(tn_loc)
     return s_loc, c_loc, q_loc, tn_loc, vms_loc
 
 
@@ -403,11 +713,11 @@ def set_vms(s1, vms_loc, vms1):
 
     chars = get_active_chars(s1)
     for k, v in vms_loc.items():
-        if k == "vms1":
+        if k == "Vms1":
             for k1, v1 in v.items():
                 if len(tn1) >= k1:
                 #    print(f"Char count: {k1} Len of {tn1} is {len(tn1)}")
-                    chars[v1]['val'] = vms1[int(k1) - 1]
+                    chars[v1]['val'] = Vms1[int(k1) - 1]
                 else:
                     chars[v1]['val'] = " "              #stepping beyond the end of the string means it is a blank char
 
