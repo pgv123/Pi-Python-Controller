@@ -607,7 +607,7 @@ def set_all_locations(s1):
     sa_loc = set_team_score_location(s1, 'Away')
     s_loc.update(sa_loc)
     c_loc = set_clock_location(s1)
-    q_loc = set_quarter_location(s1)
+    q_loc = set_quarter_location(s1, 'Quarter')
     tn_loc = set_teams_location(s1)
     vms_loc = set_vms_location(s1, 'Vms1')
     #print(tn_loc)
