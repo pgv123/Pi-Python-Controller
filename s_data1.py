@@ -15,6 +15,7 @@
 
 import os
 import json
+import Ziku
 
 def log_it(logging, str1):
     if logging:
@@ -385,15 +386,16 @@ def get_vms1_units_num(s1, group, units):
             return k
 
 def get_ziku(s1, port):
-    return getattr(Ziku, s1['spi']['port_settings'][port]['ziku'])
-
+    zikuname = s1['spi']['port_settings'][port]['ziku']
+    return getattr(Ziku,zikuname)
 
 def get_ziku_segs(s1, port):
     return s1['spi']['port_settings'][port]['ziku_segs']
 
 
 def get_bmp(s1, port):
-    return getattr(Ziku, s1['spi']['port_settings'][port]['bmp'])
+    bmpname = s1['spi']['port_settings'][port]['bmp']
+    return getattr(Ziku,bmpname)
 
 
 def get_bmp_segs(s1, port):
@@ -642,8 +644,8 @@ def get_s_val(s1, s_loc, team, score):
     s_val = 0
     s_sc = s_loc[team][score]
     for k, v in s_sc.items():
-        if leds[v]['val'] <= 9 :
-          s_val = s_val + leds[v]['val'] * k
+        if int(leds[v]['val']) <= 9 :
+          s_val = s_val + int(leds[v]['val']) * k
     return s_val
 
 
@@ -955,11 +957,11 @@ def convert_spi_vals(s1, spi_vals, dot_state, bmp_state):
             s1['spi']['port_ziku_lower'][k] = ()
             s1['spi']['port_hw_str'][k] = {}
             s1['spi']['port_bmp_flag'][k] = 0
-
-       #     print(f'Port: {k} Value: {v}')
+        #print(bmp)
+        #print(f'Port: {k} Value: {v}')
         # iterate through the values
         for i, i_dots, i_bmp in zip(v, v_dots, v_bmp):
-            #print(f"v_bmp entry: {i_bmp}")
+            #print(f"{i} {ord(i)} v_bmp entry: {i_bmp}")
             if i_bmp == 0:  # this is a digit
                 # find the line in the ziku array that matches the value
                 if int(i) != 32:  # 32 indicates a blank
@@ -984,8 +986,9 @@ def convert_spi_vals(s1, spi_vals, dot_state, bmp_state):
                 bmp1.reverse()
                 bmp2 = list(bmp[bmp_num + bmp_segs : bmp_num + bmp_segs + bmp_segs ])  # store all the lower line values in bmp2
                 bmp2.reverse()
-              #  print(f"bmp_num is: {bmp_num}")
-              #  print(f"bmp line for {i.upper()} is: {bmp2}")
+                #print(f"bmp_num is: {bmp_num}")
+                #print(f"bmp upper line for {i.upper()} is: {bmp1}")
+                #print(f"bmp lower line for {i.upper()} is: {bmp2}")
                 s1['spi']['port_ziku'][k] = s1['spi']['port_ziku'][k] + tuple(bmp1)
                 s1['spi']['port_ziku_lower'][k] = s1['spi']['port_ziku_lower'][k] + tuple(bmp2)
                 # add this set of values into the byte array

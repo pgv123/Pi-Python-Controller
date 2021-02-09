@@ -347,6 +347,7 @@ while True:
     serial_flag = 0
     if ser.in_waiting > 0:
         Comms_Error = ''
+        #print('*')
         if ser.read() != comms_start_char:
             Comms_Error = 'Message Discarded!'
             st1 = ser.read_until(comms_end_char, max_comm_string)

@@ -325,7 +325,7 @@
             "spi": 1,
             "i2c": 20,
             "state": "NC",
-            "val": "5"
+            "val": 5
         },
         "2": {
             "type": "digit",
