@@ -209,6 +209,7 @@ siren_time = board.get('siren_time')  # no. of seconds to sound the siren
 siren_on = 0
 # PyCharm says it is declared above....TimeLeft = 0.0
 CountDir = 0
+TotMins = 0
 TotSeconds = 0
 # Declared above as a float ElapsedSecs = 0.0
 normal_loop = 1
@@ -564,7 +565,7 @@ while True:
             current_sport = sport.get(sport_version)
             sport_name = current_sport['name']
             s_data.set_leds_state(scoreboard)
-            s_loc, c_loc, q_loc, tn_loc = s_data.set_all_locations(scoreboard)
+            s_loc, c_loc, q_loc, tn_loc, vms_loc = s_data.set_all_locations(scoreboard)
             Message0 = appName + board_type + board_digit_size + ' Playing: ' + sport_name
             screen_update = True
 
