@@ -49,6 +49,9 @@ if platform  == 'linux':
 
 else:
     p1 = GPIO.pi('192.168.1.123')
+if not p1.connected:
+    print("NO Connection! Exiting!")
+    exit
 
 # grab all of the scoreboard data from the file
 scoreboard = (s_data.get_scoreboard_data('config.json'))
