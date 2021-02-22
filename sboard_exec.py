@@ -18,6 +18,7 @@ from time import time, ctime, sleep
 import pigpio as GPIO
 import serial
 import string
+from sys import platform
 
 # our functions
 import s_data1 as s_data  # includes all the data structure info
@@ -40,10 +41,14 @@ from scoreboardv1 import sound_siren as sound_siren
 # if 0 is returned from following it means the service is running
 # anything else means it is not
 
-service_stat = os.system('systemctl is-active --quiet scoreboard')
+if platform  == 'linux':
+    os.system('systemctl is-active --quiet scoreboard')
 
 # create local PI GPIO
-p1 = GPIO.pi()
+    p1 = GPIO.pi()
+
+else:
+    p1 = GPIO.pi('192.168.1.123')
 
 # grab all of the scoreboard data from the file
 scoreboard = (s_data.get_scoreboard_data('config.json'))
@@ -57,9 +62,13 @@ s_i2c = s_data.get_i2c(scoreboard)  # critical I2C port settings
 
 
 # set up the Serial Port
+if platform == 'linux':
+    com_port = comms['com_port_pi']
+else:
+    com_port = comms['com_port_win']
 ser = serial.Serial(
 
-    port=comms['com_port'],
+    port=com_port,
     baudrate=comms['com_baud'],
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_ONE,
