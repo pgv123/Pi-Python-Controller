@@ -48,7 +48,7 @@ if platform  == 'linux':
     p1 = GPIO.pi()
 
 else:
-    p1 = GPIO.pi('192.168.1.123')
+    p1 = GPIO.pi('Aussport')
 if not p1.connected:
     print("NO Connection! Exiting!")
     exit
@@ -91,7 +91,10 @@ ser.reset_input_buffer()  # flush out any rubbish already there
 
 
 def send_screen():
-    os.system('clear')  # clear the screen
+    if platform == 'linux':
+        os.system('clear')  # clear the screen
+    else:
+        os.system('cls')
     print(Message0)
     print(Message1)
     print(Message2)
