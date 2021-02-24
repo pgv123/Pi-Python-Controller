@@ -224,7 +224,7 @@
                 "Port": 3
             }
         },
-        "freq": 400000,
+        "freq": 100000,
         "OE": 5,
         "state": "ON",
         "port_settings": {
@@ -233,7 +233,7 @@
                 "latch_pin": 4,
                 "spi_flag": 0,
                 "ziku": "D1x200mm_ziku_v2",
-                "ziku_segs": 6,
+                "ziku_segs": 4,
                 "bmp": "Bmp001",
                 "bmp_segs": 8,
                 "bmp_flag": 0,
@@ -244,7 +244,7 @@
                 "latch_pin": 27,
                 "spi_flag": 0,
                 "ziku": "D1x200mm_ziku_v2",
-                "ziku_segs": 6,
+                "ziku_segs": 4,
                 "bmp": "Bmp001",
                 "bmp_segs": 8,
                 "bmp_flag": 0,
@@ -255,7 +255,7 @@
                 "latch_pin": 22,
                 "spi_flag": 0,
                 "ziku": "D1x200mm_ziku_v2",
-                "ziku_segs": 6,
+                "ziku_segs": 4,
                 "bmp": "Bmp001",
                 "bmp_segs": 8,
                 "bmp_flag": 0,
@@ -266,7 +266,7 @@
                 "latch_pin": 23,
                 "spi_flag": 28,
                 "ziku": "D1x200mm_ziku_v2",
-                "ziku_segs": 6,
+                "ziku_segs": 4,
                 "bmp": "Bmp001",
                 "bmp_segs": 8,
                 "bmp_flag": 0,
@@ -625,7 +625,7 @@
             "i2c_port": "p2",
             "spi": 5,
             "i2c": 24,
-            "state": "NC",
+            "state": "ON",
             "val": 1
         },
         "22": {
@@ -640,7 +640,7 @@
             "i2c_port": "p2",
             "spi": 6,
             "i2c": 25,
-            "state": "NC",
+            "state": "ON",
             "val": 5
         },
         "23": {
@@ -685,7 +685,7 @@
             "i2c_port": "p2",
             "spi": 13,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "0"
         },
         "26": {
@@ -701,7 +701,7 @@
             "i2c_port": "p2",
             "spi": 1,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "R"
         },
         "27": {
@@ -717,7 +717,7 @@
             "i2c_port": "p2",
             "spi": 2,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "o"
         },
         "28": {
@@ -733,7 +733,7 @@
             "i2c_port": "p2",
             "spi": 3,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "o"
         },
         "29": {
@@ -749,7 +749,7 @@
             "i2c_port": "p2",
             "spi": 4,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "s"
         },
         "30": {
@@ -765,7 +765,7 @@
             "i2c_port": "p2",
             "spi": 5,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "t"
         },
         "31": {
@@ -781,7 +781,7 @@
             "i2c_port": "p2",
             "spi": 6,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "e"
         },
         "32": {
@@ -797,7 +797,7 @@
             "i2c_port": "p2",
             "spi": 7,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "r"
         },
         "33": {
@@ -813,7 +813,7 @@
             "i2c_port": "p2",
             "spi": 8,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "s"
         },
         "34": {
@@ -829,7 +829,7 @@
             "i2c_port": "p2",
             "spi": 9,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": " "
         },
         "35": {
@@ -893,7 +893,7 @@
             "i2c_port": "p2",
             "spi": 10,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "M"
         },
         "39": {
@@ -909,7 +909,7 @@
             "i2c_port": "p2",
             "spi": 11,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "u"
         },
         "40": {
@@ -925,7 +925,7 @@
             "i2c_port": "p2",
             "spi": 12,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "g"
         },
         "41": {
@@ -941,7 +941,7 @@
             "i2c_port": "p2",
             "spi": 13,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "w"
         },
         "42": {
@@ -957,7 +957,7 @@
             "i2c_port": "p2",
             "spi": 14,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "u"
         },
         "43": {
@@ -973,7 +973,7 @@
             "i2c_port": "p2",
             "spi": 15,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "m"
         },
         "44": {
@@ -989,7 +989,7 @@
             "i2c_port": "p2",
             "spi": 16,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "p"
         },
         "45": {
@@ -1005,7 +1005,7 @@
             "i2c_port": "p2",
             "spi": 17,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "s"
         },
         "46": {
@@ -1021,7 +1021,7 @@
             "i2c_port": "p2",
             "spi": 18,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": " "
         },
         "47": {
@@ -1085,7 +1085,7 @@
             "i2c_port": "p2",
             "spi": 1,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "A"
         },
         "51": {
@@ -1099,9 +1099,9 @@
             "dot_state": 0,
             "spi_port": "p3",
             "i2c_port": "p2",
-            "spi": 26,
+            "spi": 2,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "o"
         },
         "52": {
@@ -1117,7 +1117,7 @@
             "i2c_port": "p2",
             "spi": 3,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "u"
         },
         "53": {
@@ -1133,7 +1133,7 @@
             "i2c_port": "p2",
             "spi": 4,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "s"
         },
         "54": {
@@ -1149,7 +1149,7 @@
             "i2c_port": "p2",
             "spi": 5,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "S"
         },
         "55": {
@@ -1165,7 +1165,7 @@
             "i2c_port": "p2",
             "spi": 6,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "p"
         },
         "56": {
@@ -1181,7 +1181,7 @@
             "i2c_port": "p2",
             "spi": 7,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "o"
         },
         "57": {
@@ -1197,7 +1197,7 @@
             "i2c_port": "p2",
             "spi": 8,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "r"
         },
         "58": {
@@ -1213,7 +1213,7 @@
             "i2c_port": "p2",
             "spi": 9,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "t"
         },
         "59": {
@@ -1229,7 +1229,7 @@
             "i2c_port": "p2",
             "spi": 10,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": " "
         },
         "60": {
@@ -1245,7 +1245,7 @@
             "i2c_port": "p2",
             "spi": 11,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "S"
         },
         "61": {
@@ -1261,7 +1261,7 @@
             "i2c_port": "p2",
             "spi": 12,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": "c"
         },
         "62": {
@@ -1275,9 +1275,9 @@
             "dot_state": 0,
             "spi_port": "p3",
             "i2c_port": "p2",
-            "spi": 2,
+            "spi": 1,
             "i2c": 28,
-            "state": "ON",
+            "state": "NC",
             "val": " "
         },
         "63": {
