@@ -492,9 +492,34 @@ def set_leds_state(s1):
     this_vers = get_this_sport(s1, version)
     digits = this_vers['Digits']
     for k, v in digits.items():
-        leds[k]['state'] = v
-        if v == 'OFF':
-            leds[k]['val'] = 32  # set to blank
+        for led_num in v:
+            leds[led_num]['state'] = k
+            if k == 'OFF':
+                leds[led_num]['val'] = 32  # set to blank
+
+def set_sport_state(s1):
+    #read back the state of the digits for this sport into the sport
+    #dict
+    #if any of the digits are set to 'NC' then make sure the sport entry
+    #for that set is marked as 'NC'
+    version = get_board(s1).get('sport')
+    leds = get_leds(s1)
+    this_vers = get_this_sport(s1, version)
+    digits = this_vers['Digits']
+    led_on = []
+    led_off = []
+    led_nc = []
+    for k, v in leds.items():
+        if v['state'] == "ON":
+            led_on.append(k)
+
+        elif v['state'] == "OFF":
+            led_off.append(k)
+        else:
+            led_nc.append(k)
+    digits["ON"] = led_on
+    digits["OFF"] = led_off
+    digits["NC"] = led_nc
 
 
 def set_score_location(s1, team, score):
