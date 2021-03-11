@@ -90,31 +90,33 @@ serial_flag = 0
 
 def thread_serial(ser):
     global serial_flag, x
-    if ser.in_waiting > 0:
-        Comms_Error = ''
-    # print('*')
-        if ser.read() != comms_start_char:
-            Comms_Error = 'Message Discarded!'
-            st1 = ser.read_until(comms_end_char, max_comm_string)
-            log_it(logging, f'Comms: {st1}')
-            log_it(logging, Comms_Error)
-            serial_flag = 0
-        else:
-            st1 = ser.read_until(comms_end_char, max_comm_string).decode("utf-8", "replace")
-            x = st1.replace(chr(65533), ' ')
-            x = x[:len(x) - 1]  # remove the Ctrl t char at the end
-            print(f'Current Comms: {x}')
-            if x[0] != 'K' or 'L':
-                serial_flag = check_allint(x)  # check what has been received is all integers
-            else:
-                serial_flag = True  # mix of char and numbers so can't check
-            if serial_flag == True:
-                Last_Comms = f'Message Received: {x}'
-                Comms_Error = f'Valid Message! Length: {len(x)}'
-            else:
-                Comms_Error = f'Message Corrupt: {x} Length: {len(x)}'
-                log_it(logging, f'Comms: {x}')
+    while(True):
+        print(".")
+        if ser.in_waiting > 0:
+            Comms_Error = ''
+            print('*')
+            if ser.read() != comms_start_char:
+                Comms_Error = 'Message Discarded!'
+                st1 = ser.read_until(comms_end_char, max_comm_string)
+                log_it(logging, f'Comms: {st1}')
                 log_it(logging, Comms_Error)
+                serial_flag = 0
+            else:
+                st1 = ser.read_until(comms_end_char, max_comm_string).decode("utf-8", "replace")
+                x = st1.replace(chr(65533), ' ')
+                x = x[:len(x) - 1]  # remove the Ctrl t char at the end
+                print(f'Current Comms: {x}')
+                if x[0] != 'K' or 'L':
+                    serial_flag = check_allint(x)  # check what has been received is all integers
+                else:
+                    serial_flag = True  # mix of char and numbers so can't check
+                if serial_flag == True:
+                    Last_Comms = f'Message Received: {x}'
+                    Comms_Error = f'Valid Message! Length: {len(x)}'
+                else:
+                    Comms_Error = f'Message Corrupt: {x} Length: {len(x)}'
+                    log_it(logging, f'Comms: {x}')
+                    log_it(logging, Comms_Error)
 
 
 # set up the port arrays. These show the position of the digit no. in the scoreboard dictionary
