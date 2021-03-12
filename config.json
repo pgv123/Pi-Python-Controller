@@ -31,7 +31,7 @@
             "Away_TN": "RED",
             "Vms1": "RED"
         },
-        "max_team_name": 9,
+        "max_team_name": 5,
         "max_vms": 9,
         "brightness": 145,
         "siren_time": 5,
@@ -352,7 +352,7 @@
         "timeout": 1,
         "start_char": "1E",
         "end_char": "08",
-        "max_comm_string": 24
+        "max_comm_string": 42
     },
     "spi": {
         "sequence": {

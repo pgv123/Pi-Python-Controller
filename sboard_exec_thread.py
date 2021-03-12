@@ -93,24 +93,31 @@ def thread_serial(ser):
         #print(".")
         if ser.in_waiting > 0:
             Comms_Error = ''
-            print('*')
-            if ser.read() != comms_start_char:
-                Comms_Error = 'Message Discarded!'
-                #st1 = ser.read_until(comms_end_char, max_comm_string)
+            start_char = ser.read()
+            #problem here
+            if start_char != comms_start_char:
+
+                st1 = ser.read_until(comms_end_char, max_comm_string)
+                Comms_Error = f'Message Discarded:  {st1} Length: {len(st1)} Start Char: {start_char}'
                 log_it(logging, f'Comms: {st1}')
                 log_it(logging, Comms_Error)
                 #print (Comms_Error)
+
                 #print (f'Comms: {st1}')
 
             else:
-                st1 = ser.read_until(comms_end_char, max_comm_string).decode("utf-8", "replace")
+                with ser_lock:
+                    st1 = ser.read_until(comms_end_char, max_comm_string).decode("utf-8", "replace")
                 x = st1.replace(chr(65533), ' ')
                 x = x[:len(x) - 1]  # remove the Ctrl t char at the end
                 #print(f'Current Comms: {x}')
-                if x[0] != 'K' or 'L':
-                    chk_int = check_allint(x)  # check what has been received is all integers
-                else:
+                code_letter = x[0]
+                if code_letter == 'K':
                     chk_int = True  # mix of char and numbers so can't check
+                elif code_letter == 'L':
+                    chk_int = True  # mix of char and numbers so can't check
+                else:
+                    chk_int = check_allint(x)  # check what has been received is all integers
                 if chk_int == True:
                     Last_Comms = f'Message Received: {x}'
                     Comms_Error = f'Valid Message! Length: {len(x)}'
@@ -120,7 +127,7 @@ def thread_serial(ser):
                         else:
                             serial_queue.append(x)
                 else:
-                    Comms_Error = f'Message Corrupt: {x} Length: {len(x)}'
+                    Comms_Error = f'Message Corrupt: {x} Length: {len(x)} ChkInt: {chk_int} x[0]: {x[0]}'
                     log_it(logging, f'Comms: {x}')
                     log_it(logging, Comms_Error)
                 #print (Last_Comms)
