@@ -86,38 +86,45 @@ max_comm_string = comms['max_comm_string']
 
 ser.reset_input_buffer()  # flush out any rubbish already there
 
-serial_flag = 0
-
 def thread_serial(ser):
-    global serial_flag, x
+    global  serial_queue, Comms_Error, Last_Comms
+    ser_lock = threading.Lock()
     while(True):
-        print(".")
+        #print(".")
         if ser.in_waiting > 0:
             Comms_Error = ''
             print('*')
             if ser.read() != comms_start_char:
                 Comms_Error = 'Message Discarded!'
-                st1 = ser.read_until(comms_end_char, max_comm_string)
+                #st1 = ser.read_until(comms_end_char, max_comm_string)
                 log_it(logging, f'Comms: {st1}')
                 log_it(logging, Comms_Error)
-                serial_flag = 0
+                #print (Comms_Error)
+                #print (f'Comms: {st1}')
+
             else:
                 st1 = ser.read_until(comms_end_char, max_comm_string).decode("utf-8", "replace")
                 x = st1.replace(chr(65533), ' ')
                 x = x[:len(x) - 1]  # remove the Ctrl t char at the end
-                print(f'Current Comms: {x}')
+                #print(f'Current Comms: {x}')
                 if x[0] != 'K' or 'L':
-                    serial_flag = check_allint(x)  # check what has been received is all integers
+                    chk_int = check_allint(x)  # check what has been received is all integers
                 else:
-                    serial_flag = True  # mix of char and numbers so can't check
-                if serial_flag == True:
+                    chk_int = True  # mix of char and numbers so can't check
+                if chk_int == True:
                     Last_Comms = f'Message Received: {x}'
                     Comms_Error = f'Valid Message! Length: {len(x)}'
+                    with ser_lock:
+                        if serial_queue[0] == '':
+                            serial_queue[0] = x
+                        else:
+                            serial_queue.append(x)
                 else:
                     Comms_Error = f'Message Corrupt: {x} Length: {len(x)}'
                     log_it(logging, f'Comms: {x}')
                     log_it(logging, Comms_Error)
-
+                #print (Last_Comms)
+                #print (Comms_Error)
 
 # set up the port arrays. These show the position of the digit no. in the scoreboard dictionary
 # in it's correct location in the spi port or which channel it is in the i2c port
@@ -233,7 +240,8 @@ freq = 5000000
 
 # general program defs
 
-x = []  # serial data list
+x = []  # current serial data
+serial_queue = [''] #serial queue list
 d1 = []  # first data port list
 d2 = []  # second data port list
 d3 = []  # third data port list
@@ -396,8 +404,11 @@ ser_thread.start()
 
 while True:
 
-    if serial_flag == 1:
+    if serial_queue[0] != '':
 
+        x = serial_queue.pop(0)
+        if len(serial_queue) == 0:
+            serial_queue.append('')
         message_type = x[0]
 
         # Single Score update message
@@ -744,6 +755,7 @@ while True:
         s_data.set_all_scores(scoreboard, s_loc, s1)  # saves the scores into the data structure scoreboard
    #     log_it(True, scoreboard['leds']['10']['val'])
         screen_update = True
+        
 
     if clk_update or timer_update or score_update:
         # now get the updated values in a form that can be sent to hardware
