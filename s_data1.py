@@ -719,17 +719,19 @@ def set_team_names(s1, tn_loc, tn1, tn2):
     for k, v in tn_loc.items():
         if k == "Home":
             for k1, v1 in v.items():
-                if len(tn1) >= k1:
+                if bool(v1):                #ensures we don't process when there are NO team names
+                    if len(tn1) >= k1:
                 #    print(f"Char count: {k1} Len of {tn1} is {len(tn1)}")
-                    chars[v1]['val'] = tn1[int(k1) - 1]
-                else:
-                    chars[v1]['val'] = " "              #stepping beyond the end of the string means it is a blank char
+                        chars[v1]['val'] = tn1[int(k1) - 1]
+                    else:
+                        chars[v1]['val'] = " "              #stepping beyond the end of the string means it is a blank char
         if k == "Away":
             for k1, v1 in v.items():
-                if len(tn2) >= k1:
-                    chars[v1]['val'] = tn2[int(k1) - 1]
-                else:
-                    chars[v1]['val'] = " "              #stepping beyond the end of the string means it is a blank char
+                if bool(v1):                #ensures we don't process when there are NO team names
+                    if len(tn2) >= k1:
+                        chars[v1]['val'] = tn2[int(k1) - 1]
+                    else:
+                        chars[v1]['val'] = " "              #stepping beyond the end of the string means it is a blank char
 
 def set_vms(s1, vms_loc, vms1):
     # takes the string arg vms and puts each of it's members into correct char in the scoreboard data structure s1
@@ -742,7 +744,7 @@ def set_vms(s1, vms_loc, vms1):
     for k, v in vms_loc.items():
         if k == "Vms1":
             for k1, v1 in v.items():
-                if len(tn1) >= k1:
+                if len(vms1) >= k1:
                 #    print(f"Char count: {k1} Len of {tn1} is {len(tn1)}")
                     chars[v1]['val'] = Vms1[int(k1) - 1]
                 else:

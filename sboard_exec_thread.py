@@ -579,8 +579,8 @@ while True:
                 Message2 = 'Team Names Update'
                 tn1 = x[1:maxteamname + 1]
                 tn2 = x[maxteamname +1:(maxteamname*2) + 1]
-                if bool(tn_loc):
-                    s_data.set_team_names(scoreboard,tn_loc,tn1,tn2)
+               # if bool(tn_loc):
+                s_data.set_team_names(scoreboard,tn_loc,tn1,tn2)
             #			if  "exit" in tn1:
             #				exit()
                 log_it(logging, "Team Name 1: {tn1}")
@@ -590,8 +590,7 @@ while True:
         elif message_type == 'L':  # VMS message
             Message2 = 'VMS Update'
             vms1 = x[1:maxvms + 1]
-            if bool(vms1_loc):
-                s_data.set_vms(scoreboard,vms1_loc,vms1)
+            s_data.set_vms(scoreboard,vms_loc,vms1)
 
             log_it(logging, "Vms1: {vms1}")
 
