@@ -405,6 +405,8 @@ def get_bmp_segs(s1, port):
 def get_dot_val(s1, port):
     return s1['spi']['port_settings'][port]["dot_val"]
 
+def get_dot_byte(s1, port):
+    return s1['spi']['port_settings'][port]["dot_byte"]
 
 def get_i2c_port(s1, port):
     leds = get_active_leds(s1)
@@ -975,6 +977,7 @@ def convert_spi_vals(s1, spi_vals, dot_state, bmp_state):
         bmp = get_bmp(s1, k)
         bmp_segs = get_bmp_segs(s1, k)
         dot_val = get_dot_val(s1, k)
+        dot_byte = get_dot_byte(s1, k)
         spistr = ""  # set the hardware string to null
         ba = bytearray()  # set the byte array to null
         if k not in s1['spi']['port_ziku']:
@@ -998,7 +1001,8 @@ def convert_spi_vals(s1, spi_vals, dot_state, bmp_state):
                 # OR ing the first byte with 240 (the value set in dot_val) should do the trick
 
                 this_dot = dot_val * i_dots
-                z1[0] = z1[0] | this_dot
+                #different size digits appear to have different dot positions thus dot_byte
+                z1[dot_byte] = z1[dot_byte] | this_dot
                 s1['spi']['port_ziku'][k] = s1['spi']['port_ziku'][k] + tuple(z1)
                 # add this set of values into the byte array
                 ba = ba + bytearray(z1)
