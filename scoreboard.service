@@ -8,7 +8,7 @@
  Type=idle
  User=pi
  WorkingDirectory=/home/pi/programs
- ExecStart=/usr/bin/python3 /home/pi/programs/sboard_exec.py
+ ExecStart=/usr/bin/python3 /home/pi/programs/sboard_exec_thread.py
  Restart=always
  
  

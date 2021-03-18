@@ -395,7 +395,6 @@ def test_seq(scoreboard, s_loc, c_loc, q_loc, tn_loc, s_spi, dig_val):
             send_i2c_digit_data(p1, scoreboard)
         sleep(0.5)
 
-#test_seq(scoreboard, s_loc, c_loc, q_loc, tn_loc, s_spi, 8)
 s1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # score data
 clk = [0, 0, 0, 0, 0, 0]  # clock data
 s_data.set_all_scores(scoreboard, s_loc, s1)
@@ -565,16 +564,19 @@ while True:
                     ctrl_val = int(x[6:8])
                     Message2 = f'Control Command {ctrl_cmnd} {ctrl_val}'
                 except:
+                    ctrl_val = 0
                     Message2 = f'Control Command {ctrl_cmnd}'
                 if ctrl_cmnd == "TS":
                     if ctrl_val == 0:
                         dig_val = 8
                     else:
                         dig_val = ctrl_val
-                    test_seq(scoreboard, s_loc, c_loc, q_loc, s_spi, dig_val)
+                    test_seq(scoreboard, s_loc, c_loc, q_loc, tn_loc, s_spi, dig_val)
                 if ctrl_cmnd == "BR":
                     scoreboard['brightness'] = brightness
                     s_data.set_scoreboard_data('config.json', scoreboard)
+                if ctrl_cmnd == "SD":  #need to finish off this code
+                    scoreboard['brightness'] = 255
             else:
                 Message2 = 'Team Names Update'
                 tn1 = x[1:maxteamname + 1]
