@@ -1,10 +1,10 @@
 {
     "board": {
-        "board_type": "OM",
-        "digit_size": "400",
+        "board_type": "FBC",
+        "digit_size": "All",
         "sport": "V1",
-        "ziku": "D1x400mm_ziku",
-        "ziku_segs": 10,
+        "ziku": "All_ziku",
+        "ziku_segs": 1,
         "dot_val": 240,
         "dot_byte": 0,
         "led_start": {
@@ -45,7 +45,7 @@
         }
     },
     "sport": {
-        "multi": "OFF",
+        "multi": "ON",
         "V1": {
             "name": "Aussie Rules",
             "Home": {
@@ -66,8 +66,20 @@
             },
             "Digits": {
                 "ON": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
                     "7",
                     "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12",
+                    "13",
+                    "14",
                     "15",
                     "16",
                     "17",
@@ -77,18 +89,6 @@
                 ],
                 "OFF": [],
                 "NC": [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6",
-                    "9",
-                    "10",
-                    "11",
-                    "12",
-                    "13",
-                    "14",
                     "21",
                     "22",
                     "23",
@@ -361,37 +361,37 @@
             "Clock": {
                 "Pos": 1,
                 "Port": 0,
-                "Rev": 0
+                "Rev": false
             },
             "Home_Score": {
                 "Pos": 2,
-                "Port": 2,
-                "Rev": 0
+                "Port": 1,
+                "Rev": false
             },
             "Away_Score": {
-                "Pos": 3,
+                "Pos": 6,
                 "Port": 2,
-                "Rev": 1
+                "Rev": false
             },
             "Quarter": {
                 "Pos": 4,
                 "Port": 1,
-                "Rev": 0
+                "Rev": false
             },
             "Home_TN": {
                 "Pos": 5,
                 "Port": 2,
-                "Rev": 0
+                "Rev": false
             },
             "Away_TN": {
                 "Pos": 6,
                 "Port": 2,
-                "Rev": 0
+                "Rev": false
             },
             "Vms1": {
-                "Pos": 7,
+                "Pos": 0,
                 "Port": 3,
-                "Rev": 0
+                "Rev": false
             }
         },
         "freq": 400000,
@@ -402,49 +402,49 @@
                 "chan": 0,
                 "latch_pin": 4,
                 "spi_flag": 0,
-                "ziku": "D1x400mm_ziku",
-                "ziku_segs": 10,
+                "ziku": "All_ziku",
+                "ziku_segs": 1,
                 "bmp": "Bmp001",
                 "bmp_segs": 8,
                 "bmp_flag": 0,
                 "dot_val": 240,
-                "dot_byte": 2
+                "dot_byte": 0
             },
             "p1": {
                 "chan": 0,
                 "latch_pin": 27,
                 "spi_flag": 0,
-                "ziku": "D1x400mm_ziku",
-                "ziku_segs": 10,
+                "ziku": "All_ziku",
+                "ziku_segs": 1,
                 "bmp": "Bmp001",
                 "bmp_segs": 8,
                 "bmp_flag": 0,
                 "dot_val": 240,
-                "dot_byte": 2
+                "dot_byte": 0
             },
             "p2": {
                 "chan": 0,
                 "latch_pin": 22,
                 "spi_flag": 0,
-                "ziku": "D1x400mm_ziku",
-                "ziku_segs": 10,
+                "ziku": "All_ziku",
+                "ziku_segs": 1,
                 "bmp": "Bmp001",
                 "bmp_segs": 8,
                 "bmp_flag": 0,
                 "dot_val": 240,
-                "dot_byte": 2
+                "dot_byte": 0
             },
             "p3": {
                 "chan": 0,
                 "latch_pin": 23,
                 "spi_flag": 28,
-                "ziku": "D1x400mm_ziku",
-                "ziku_segs": 10,
+                "ziku": "All_ziku",
+                "ziku_segs": 1,
                 "bmp": "Bmp001",
                 "bmp_segs": 8,
                 "bmp_flag": 0,
                 "dot_val": 240,
-                "dot_byte": 2
+                "dot_byte": 0
             },
             "ports": {},
             "port_vals": {},
@@ -499,7 +499,7 @@
             "i2c_port": "p1",
             "spi": 1,
             "i2c": 20,
-            "state": "NC",
+            "state": "ON",
             "val": "5"
         },
         "2": {
@@ -512,10 +512,10 @@
             "dot_state": 0,
             "spi_port": "p1",
             "i2c_port": "p1",
-            "spi": 1,
+            "spi": 2,
             "i2c": 21,
-            "state": "NC",
-            "val": "2"
+            "state": "ON",
+            "val": 2
         },
         "3": {
             "type": "digit",
@@ -527,10 +527,10 @@
             "dot_state": 0,
             "spi_port": "p1",
             "i2c_port": "p1",
-            "spi": 2,
+            "spi": 3,
             "i2c": 22,
-            "state": "NC",
-            "val": "9"
+            "state": "ON",
+            "val": 9
         },
         "4": {
             "type": "digit",
@@ -542,10 +542,10 @@
             "dot_state": 0,
             "spi_port": "p1",
             "i2c_port": "p1",
-            "spi": 3,
+            "spi": 4,
             "i2c": 23,
-            "state": "NC",
-            "val": "5"
+            "state": "ON",
+            "val": 5
         },
         "5": {
             "type": "digit",
@@ -557,10 +557,10 @@
             "dot_state": 0,
             "spi_port": "p1",
             "i2c_port": "p1",
-            "spi": 4,
+            "spi": 5,
             "i2c": 24,
-            "state": "NC",
-            "val": "9"
+            "state": "ON",
+            "val": 9
         },
         "6": {
             "type": "digit",
@@ -572,10 +572,10 @@
             "dot_state": 0,
             "spi_port": "p1",
             "i2c_port": "p1",
-            "spi": 5,
+            "spi": 6,
             "i2c": 25,
-            "state": "NC",
-            "val": "8"
+            "state": "ON",
+            "val": 8
         },
         "7": {
             "type": "digit",
@@ -585,9 +585,9 @@
             "units": 10,
             "dot": "NO",
             "dot_state": 0,
-            "spi_port": "p2",
+            "spi_port": "p1",
             "i2c_port": "p1",
-            "spi": 1,
+            "spi": 7,
             "i2c": 26,
             "state": "ON",
             "val": "5"
@@ -600,9 +600,9 @@
             "units": 1,
             "dot": "NO",
             "dot_state": 0,
-            "spi_port": "p2",
+            "spi_port": "p1",
             "i2c_port": "p1",
-            "spi": 2,
+            "spi": 8,
             "i2c": 27,
             "state": "ON",
             "val": "3"
@@ -615,11 +615,11 @@
             "units": 100,
             "dot": "NO",
             "dot_state": 0,
-            "spi_port": "p1",
+            "spi_port": "p2",
             "i2c_port": "p1",
-            "spi": 6,
+            "spi": 1,
             "i2c": 28,
-            "state": "NC",
+            "state": "ON",
             "val": "32"
         },
         "10": {
@@ -630,11 +630,11 @@
             "units": 10,
             "dot": "NO",
             "dot_state": 0,
-            "spi_port": "p1",
+            "spi_port": "p2",
             "i2c_port": "p1",
-            "spi": 8,
+            "spi": 2,
             "i2c": 29,
-            "state": "NC",
+            "state": "ON",
             "val": "4"
         },
         "11": {
@@ -645,11 +645,11 @@
             "units": 1,
             "dot": "NO",
             "dot_state": 0,
-            "spi_port": "p1",
+            "spi_port": "p2",
             "i2c_port": "p1",
-            "spi": 9,
+            "spi": 3,
             "i2c": 30,
-            "state": "NC",
+            "state": "ON",
             "val": "9"
         },
         "12": {
@@ -660,11 +660,11 @@
             "units": 10,
             "dot": "NO",
             "dot_state": 0,
-            "spi_port": "p1",
+            "spi_port": "p2",
             "i2c_port": "p1",
-            "spi": 10,
+            "spi": 4,
             "i2c": 31,
-            "state": "NC",
+            "state": "ON",
             "val": "9"
         },
         "13": {
@@ -675,11 +675,11 @@
             "units": 1,
             "dot": "NO",
             "dot_state": 0,
-            "spi_port": "p1",
+            "spi_port": "p2",
             "i2c_port": "p1",
-            "spi": 11,
+            "spi": 5,
             "i2c": 32,
-            "state": "NC",
+            "state": "ON",
             "val": "9"
         },
         "14": {
@@ -690,11 +690,11 @@
             "units": 100,
             "dot": "NO",
             "dot_state": 0,
-            "spi_port": "p1",
+            "spi_port": "p2",
             "i2c_port": "p1",
-            "spi": 3,
+            "spi": 6,
             "i2c": 33,
-            "state": "NC",
+            "state": "ON",
             "val": "5"
         },
         "15": {
@@ -707,7 +707,7 @@
             "dot_state": 0,
             "spi_port": "p2",
             "i2c_port": "p1",
-            "spi": 3,
+            "spi": 7,
             "i2c": 34,
             "state": "ON",
             "val": 7
@@ -722,7 +722,7 @@
             "dot_state": 0,
             "spi_port": "p2",
             "i2c_port": "p1",
-            "spi": 4,
+            "spi": 8,
             "i2c": 35,
             "state": "ON",
             "val": 9
@@ -797,7 +797,7 @@
             "dot_state": 0,
             "spi_port": "p0",
             "i2c_port": "p2",
-            "spi": 5,
+            "spi": 2,
             "i2c": 24,
             "state": "NC",
             "val": "1"
@@ -812,7 +812,7 @@
             "dot_state": 0,
             "spi_port": "p0",
             "i2c_port": "p2",
-            "spi": 6,
+            "spi": 1,
             "i2c": 25,
             "state": "NC",
             "val": "5"
