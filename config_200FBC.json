@@ -352,8 +352,8 @@
         "com_port_win": "COM6",
         "com_baud": 9600,
         "timeout": 1,
-        "start_char": "1F",
-        "end_char": "09",
+        "start_char": "1E",
+        "end_char": "08",
         "max_comm_string": 24
     },
     "spi": {
