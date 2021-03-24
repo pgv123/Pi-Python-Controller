@@ -618,12 +618,14 @@ while True:
         # Timer start message
         elif message_type == 'T':
             Message2 = 'Timer Start'
+            x = x.ljust(8,"0")
+            TimeStr = f"{x[2]}{x[3]}:{x[4]}{x[5]}:{x[6]}{x[7]}"
             t1[:] = []
             t2[:] = []  # for i2c use
-            for i in range(2, len(x)):
-                t1.append(x[i])
-                t2.append(x[i])
-            TimeStr = f"{t1[0]}{t1[1]}:{t1[2]}{t1[3]}:{t1[4]}{t1[5]}"
+ #           for i in range(2, len(x)):
+  #              t1.append(x[i])
+   #             t2.append(x[i])
+    #        TimeStr = f"{t1[0]}{t1[1]}:{t1[2]}{t1[3]}:{t1[4]}{t1[5]}"
             log_it(logging, f"Timer Set: {TimeStr}")
             CurrentTime = time()
             PrevTime = CurrentTime
