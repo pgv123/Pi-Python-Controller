@@ -748,7 +748,7 @@ def set_vms(s1, vms_loc, vms1):
             for k1, v1 in v.items():
                 if len(vms1) >= k1:
                 #    print(f"Char count: {k1} Len of {tn1} is {len(tn1)}")
-                    chars[v1]['val'] = Vms1[int(k1) - 1]
+                    chars[v1]['val'] = vms1[int(k1) - 1]
                 else:
                     chars[v1]['val'] = " "              #stepping beyond the end of the string means it is a blank char
 
