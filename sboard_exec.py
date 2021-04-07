@@ -347,7 +347,7 @@ def test_seq(scoreboard, s_loc, c_loc, q_loc, tn_loc, s_spi, dig_val):
             send_i2c_digit_data(p1, scoreboard)
         sleep(0.5)
 
-#test_seq(scoreboard, s_loc, c_loc, q_loc, tn_loc, s_spi, 8)
+test_seq(scoreboard, s_loc, c_loc, q_loc, tn_loc, s_spi, 8)
 s1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # score data
 clk = [0, 0, 0, 0, 0, 0]  # clock data
 s_data.set_all_scores(scoreboard, s_loc, s1)
