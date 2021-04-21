@@ -49,7 +49,7 @@ if platform  == 'linux':
     p1 = GPIO.pi()
 
 else:
-    p1 = GPIO.pi('Aussport')
+    p1 = GPIO.pi('192.168.0.248')
 if not p1.connected:
     print("NO Connection! Exiting!")
     exit
@@ -175,6 +175,12 @@ def send_screen():
     print('\r')
     print(f'Current brightness: {brightness}')
 
+def rebuild_vms(vms1):
+    left = vms1[0:1]
+    right = vms1[1:]
+
+    return (right + left)
+
 
 logging = False  # set True/False to turn on/off capture of logging data in 'scorelog.txt'
 
@@ -264,6 +270,14 @@ vms1 = names.get('Vms1')
 maxteamname = board.get('max_team_name')
 maxvms = board.get('max_vms')
 vms_scroll = board.get('vms_scroll')
+if vms_scroll > 0 and len(vms1) > maxvms:
+    vms_scroll_on = True
+    end_vms_time = CurrentTime + vms_scroll
+    vms1 = vms1 + "      "
+else:
+    vms_scroll_on = False
+    end_vms_time = 0
+
 brightness = board.get('brightness')
 
 timer_update = False
@@ -318,6 +332,7 @@ loopval = normal_loop
 clk_update = True
 score_update = True
 timer_update = False
+vms_update = False
 run_timer = False
 
 #prepare the standard messages for on-screen and log file
@@ -591,7 +606,15 @@ while True:
         # VMS Message
         elif message_type == 'L':  # VMS message
             Message2 = 'VMS Update'
-            vms1 = x[1:maxvms + 1]
+ #           vms1 = x[1:maxvms + 1]
+            vms1 = x[1:]
+            if vms_scroll > 0 and len(vms1) > maxvms:
+                vms_scroll_on = True
+                end_vms_time = CurrentTime + vms_scroll
+                vms1 = vms1 + "      "
+            else:
+                vms_scroll_on = False
+                end_vms_time = 0
             s_data.set_vms(scoreboard,vms_loc,vms1)
 
             log_it(logging, "Vms1: {vms1}")
@@ -670,6 +693,15 @@ while True:
     # this is the start of time based processing
 
     CurrentTime = time()  # get the current time
+
+    # now check the vms to see if we need to adjust the vms
+    if vms_scroll_on == True:
+        if end_vms_time <= CurrentTime:
+            vms1 = rebuild_vms(vms1)
+            s_data.set_vms(scoreboard, vms_loc, vms1)
+            end_vms_time = CurrentTime + vms_scroll
+            vms_update = True
+
     if (CurrentTime - PrevTime) >= loopval:  # loopval has elapsed!
         # first check on the siren - when this goes to audio out maybe change a lot of this one
         if siren_on == 1:
@@ -678,6 +710,8 @@ while True:
                 siren_on = 0
                 p1.write(siren_pin, 0)
                 Message2 = "Waiting for comms"
+
+
 
         if run_timer:
             timer_update = True
@@ -767,7 +801,7 @@ while True:
         screen_update = True
         
 
-    if clk_update or timer_update or score_update:
+    if clk_update or timer_update or score_update or vms_update:
         # now get the updated values in a form that can be sent to hardware
 
         if SPI:
@@ -785,13 +819,14 @@ while True:
             send_i2c_digit_data(p1, scoreboard)
         score_update = False
         clk_update = False
+        vms_update = False
  #      timer_update = False
 
 
         d1[:] = []
 
     if screen_update:  # show the diagnostic screen
-        send_screen()
+ #       send_screen()
         screen_update = False
 
     if old_brightness != brightness:  # must have to reset the brightness
