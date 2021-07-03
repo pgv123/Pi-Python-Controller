@@ -892,6 +892,8 @@ def sort_vals(ports):  # return a list which is the values from each digit for t
 # in the correct order as described in the 'spi' value for each of the ports
 # it also returns a list which is either 1 or 0 for each digit based on whether the dot
 # should be displayed for this digit
+# it also returns a list which is either 1 or 0 which indicates whether a bmp should be used or ziku
+# 1 for bmp (char), 0 for ziku (digit)
 
 def get_spi_vals(s1):
     s_spi = get_spi(s1)
@@ -964,6 +966,7 @@ def get_ziku_row(ziku, ziku_num, ziku_segs, dot):
 # at each digit/char
 # the dot_state values are a corresponding list and represents high or low for the dot
 # attached to each digit/char
+# the bmp_state values are a corresponding list and represents a 1 for char, a 0 for digit
 
 def convert_spi_vals(s1, spi_vals, dot_state, bmp_state):
     port = s1['spi']['port_vals']
