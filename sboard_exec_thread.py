@@ -49,7 +49,7 @@ if platform  == 'linux':
     p1 = GPIO.pi()
 
 else:
-    p1 = GPIO.pi('192.168.0.248')
+    p1 = GPIO.pi("Aussport")    #('192.168.0.248')
 if not p1.connected:
     print("NO Connection! Exiting!")
     exit
@@ -826,7 +826,7 @@ while True:
         d1[:] = []
 
     if screen_update:  # show the diagnostic screen
- #       send_screen()
+        send_screen()
         screen_update = False
 
     if old_brightness != brightness:  # must have to reset the brightness
