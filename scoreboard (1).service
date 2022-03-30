@@ -1,0 +1,16 @@
+[Unit]
+ Description=Scoreboard Service
+ After=multi-user.target
+ Requires=pigpiod.service
+ 
+
+ [Service]
+ Type=idle
+ User=pi
+ WorkingDirectory=/home/pi/programs
+ ExecStart=/usr/bin/python3 /home/pi/programs/sboard_exec.py
+ Restart=always
+ 
+ 
+ [Install]
+ WantedBy=multi-user.target
